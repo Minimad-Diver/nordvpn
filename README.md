@@ -1,12 +1,12 @@
 <p align="center">
-    <a href="https://nordvpn.com/"><img src="https://github.com/minimad/nordvpn/raw/master/NordVpn_logo.png"/></a>
+    <a href="https://nordvpn.com/"><img src="https://github.com/Minimad-Diver/nordvpn/raw/master/NordVpn_logo.png"/></a>
     </br>
-    <a href="https://github.com/minimad/nordvpn/blob/master/LICENSE"><img src="https://badgen.net/github/license/minimad/nordvpn?color=cyan"/></a>
-    <a href="https://cloud.docker.com/u/minimad/repository/docker/minimad/nordvpn"><img src="https://badgen.net/docker/size/minimad/nordvpn?icon=docker&label=size"/></a>
-    <a href="https://cloud.docker.com/u/minimad/repository/docker/minimad/nordvpn"><img src="https://badgen.net/docker/pulls/minimad/nordvpn?icon=docker&label=pulls"/></a>
-    <a href="https://cloud.docker.com/u/minimad/repository/docker/minimad/nordvpn"><img src="https://badgen.net/docker/stars/minimad/nordvpn?icon=docker&label=stars"/></a>
-    <a href="https://github.com/minimad/nordvpn"><img src="https://badgen.net/github/forks/minimad/nordvpn?icon=github&label=forks&color=black"/></a>
-    <a href="https://github.com/minimad/nordvpn"><img src="https://badgen.net/github/stars/minimad/nordvpn?icon=github&label=stars&color=black"/></a>
+    <a href="https://github.com/Minimad-Diver/nordvpn/blob/master/LICENSE"><img src="https://badgen.net/github/license/Minimad-Diver/nordvpn?color=cyan"/></a>
+    <a href="https://cloud.docker.com/u/minimaddiver/repository/docker/minimaddiver/nordvpn"><img src="https://badgen.net/docker/size/minimaddiver/nordvpn?icon=docker&label=size"/></a>
+    <a href="https://cloud.docker.com/u/minimaddiver/repository/docker/minimaddiver/nordvpn"><img src="https://badgen.net/docker/pulls/minimaddiver/nordvpn?icon=docker&label=pulls"/></a>
+    <a href="https://cloud.docker.com/u/minimaddiver/repository/docker/minimaddiver/nordvpn"><img src="https://badgen.net/docker/stars/minimaddiver/nordvpn?icon=docker&label=stars"/></a>
+    <a href="https://github.com/Minimad-Diver/nordvpn"><img src="https://badgen.net/github/forks/Minimad-Diver/nordvpn?icon=github&label=forks&color=black"/></a>
+    <a href="https://github.com/Minimad-Diver/nordvpn"><img src="https://badgen.net/github/stars/Minimad-Diver/nordvpn?icon=github&label=stars&color=black"/></a>
     <a href="https://travis-ci.com/minimad/nordvpn"><img src="https://travis-ci.com/minimad/nordvpn.svg?branch=master"/></a>
 </p>
 
@@ -25,7 +25,7 @@ This container was designed to be started first to provide a connection to other
     docker run -ti --cap-add=NET_ADMIN --cap-add=SYS_MODULE --device /dev/net/tun --name vpn \
                 --sysctl net.ipv4.conf.all.rp_filter=2 \
                 -e USER=user@email.com -e PASS='pas$word' \
-                -e CONNECT=country -e TECHNOLOGY=NordLynx -d minimad/nordvpn
+                -e CONNECT=country -e TECHNOLOGY=NordLynx -d minimaddiver/nordvpn
 
 Once it's up other containers can be started using it's network connection:
 
@@ -62,11 +62,11 @@ The environment variable NETWORK must be your local network that you would conne
 
     docker run -ti --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
                 -p 8080:80 -e NETWORK=192.168.1.0/24 \ 
-                -e USER=user@email.com -e PASS='pas$word' -d minimad/nordvpn                
+                -e USER=user@email.com -e PASS='pas$word' -d minimaddiver/nordvpn                
 
 Now just create the second container _without_ the `-p` parameter, only inlcude the `--net=container:vpn`, the port should be declare in the vpn container.
 
-    docker run -ti --rm --net=container:vpn -d minimad/riot-web
+    docker run -ti --rm --net=container:vpn -d minimaddiver/riot-web
 
 now the service provided by the second container would be available from the host machine (http://localhost:8080) or anywhere inside the local network (http://192.168.1.xxx:8080).
 
@@ -75,7 +75,7 @@ now the service provided by the second container would be available from the hos
 version: "3"
 services:
   vpn:
-    image: minimad/nordvpn
+    image: v/nordvpn
     cap_add:
       - NET_ADMIN               # Required
       - SYS_MODULE              # Required for TECHNOLOGY=NordLynx
@@ -83,7 +83,7 @@ services:
       - net.ipv4.conf.all.rp_filter=2
     devices:
       - /dev/net/tun            # Required
-    environment:                # Review https://github.com/minimad/nordvpn#environment-variables
+    environment:                # Review https://github.com/Minimad-Diver/nordvpn#environment-variables
       - USER=user@email.com     # Required
       - "PASS=pas$word"         # Required
       - CONNECT=United_States
@@ -118,7 +118,7 @@ services:
 version: "3"
 services:
   vpn:
-    image: minimad/nordvpn
+    image: minimaddiver/nordvpn
     network_mode: bridge        # Required
     cap_add:
       - NET_ADMIN               # Required
@@ -127,7 +127,7 @@ services:
       - net.ipv4.conf.all.rp_filter=2
     devices:
       - /dev/net/tun            # Required
-    environment:                # Review https://github.com/minimad/nordvpn#environment-variables
+    environment:                # Review https://github.com/Minimad-Diver/nordvpn#environment-variables
       - USER=user@email.com     # Required
       - "PASS=pas$word"         # Required
       - CONNECT=United_States
@@ -153,11 +153,11 @@ All traffic going through the container is router to the vpn (unless whitelisted
  * `USER`     - User for NordVPN account.
  * `PASS`     - Password for NordVPN account, surrounding the password in single quotes will prevent issues with special characters such as `$`.
  * `CONNECT`  -  [country]/[server]/[country_code]/[city]/[group] or [country] [city], if none provide you will connect to  the recommended server.
-   - Provide a [country] argument to connect to a specific country. For example: Australia , Use `docker run --rm minimad/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn countries"` to get the list of countries.
+   - Provide a [country] argument to connect to a specific country. For example: Australia , Use `docker run --rm minimaddiver/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn countries"` to get the list of countries.
    - Provide a [server] argument to connecto to a specific server. For example: jp35 , [Full List](https://nordvpn.com/servers/tools/)
    - Provide a [country_code] argument to connect to a specific country. For example: us 
-   - Provide a [city] argument to connect to a specific city. For example: 'Hungary Budapest' , Use `docker run --rm minimad/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn cities [country]"` to get the list of cities. 
-   - Provide a [group] argument to connect to a specific servers group. For example: P2P , Use `docker run --rm minimad/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn groups"` to get the full list.
+   - Provide a [city] argument to connect to a specific city. For example: 'Hungary Budapest' , Use `docker run --rm minimaddiver/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn cities [country]"` to get the list of cities. 
+   - Provide a [group] argument to connect to a specific servers group. For example: P2P , Use `docker run --rm minimaddiver/nordvpn sh -c "nordvpnd & sleep 1 && nordvpn groups"` to get the full list.
    - --group value, -g value  Specify a server group to connect to. For example: 'us -g p2p'
  * `TECHNOLOGY` - Specify Technology to use: 
    * OpenVPN    - Traditional connection.
@@ -176,7 +176,7 @@ All traffic going through the container is router to the vpn (unless whitelisted
 
 # Supported Architectures
 
-This image use [docker manifest for multi-platform awareness](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list), simply pulling `minimad/nordvpn` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+This image use [docker manifest for multi-platform awareness](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list), simply pulling `minimaddiver/nordvpn` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 | Architecture      | Tag | 
 | :----:            | :---: | 
@@ -188,4 +188,4 @@ This image use [docker manifest for multi-platform awareness](https://github.com
 
 # Issues
 
-If you have any problems with or questions about this image, please contact me through a [GitHub issue](https://github.com/minimad/nordvpn/issues).
+If you have any problems with or questions about this image, please contact me through a [GitHub issue](https://github.com/Minimad-Diver/nordvpn/issues).
