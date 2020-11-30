@@ -18,6 +18,7 @@ RUN addgroup --system vpn && \
     apt-get install -yqq nordvpn${NORDVPN_VERSION:+=$NORDVPN_VERSION} || sed -i "s/init)/$(ps --no-headers -o comm 1))/" /var/lib/dpkg/info/nordvpn.postinst && \
     update-alternatives --set iptables /usr/sbin/iptables-legacy && \
     update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy && \
+    mv /sbin/sysctl /sbin/sysctl.orig && \
     apt-get install -yqq && apt-get clean && \
     rm -rf \
         ./nordvpn* \
@@ -27,5 +28,7 @@ RUN addgroup --system vpn && \
 #CROSSRUN [ "cross-build-end" ]
 
 CMD /usr/bin/start_vpn.sh
-COPY start_vpn.sh /usr/bin
+COPY sysctl_wrapper.sh /sbin/sysctl
 
+
+CMD /usr/bin/start_vpn.sh
