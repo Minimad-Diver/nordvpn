@@ -27,8 +27,7 @@ RUN addgroup --system vpn && \
         /var/tmp/*
 #CROSSRUN [ "cross-build-end" ]
 
-CMD /usr/bin/start_vpn.sh
+COPY start_vpn.sh /usr/bin
 COPY sysctl_wrapper.sh /sbin/sysctl
-
 
 CMD /usr/bin/start_vpn.sh
