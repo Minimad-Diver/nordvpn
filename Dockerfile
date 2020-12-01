@@ -11,7 +11,7 @@ HEALTHCHECK --interval=5m --timeout=20s --start-period=1m \
 #CROSSRUN [ "cross-build-start" ]
 RUN addgroup --system vpn && \
     apt-get update && apt-get upgrade -y && \
-    apt-get install -y wget dpkg curl gnupg2 jq traceroute && \
+    apt-get install -y wget dpkg curl gnupg2 jq traceroute iptables xsltproc && \
     wget -nc https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb && \
     dpkg -i nordvpn-release_1.0.0_all.deb && \
     apt-get update && \
